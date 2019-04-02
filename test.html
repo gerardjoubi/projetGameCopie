@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <canvas id="example2" width="300" height="300"></canvas>
+
+    <canvas id="example" width="300" height="300"></canvas>
+    <button onclick="draw(0,0)">DRAW</button>
+
+
+
+    <script>
+
+
+
+        // use id "example" to get <canvas></canvas> tag
+        //const theCanvas = document.getElementById("example");
+
+        // capture 2d context where everything happens in canvas
+        // context has all the methods for drawing things
+        // const ctx = theCanvas.getContext("2d");
+
+
+        const theCanvas2 = document.getElementById("example2");
+        const ctx = theCanvas2.getContext("2d");
+        // javascripts/index.js
+        // create new image object
+        const fireballImg = new Image();
+        const fireballImg2 = new Image();
+        // "src" has to point as the image is used in HTML file
+        fireballImg.src = "./images/spaceShip.gif";
+        fireballImg2.src = "./images/space.jpg";
+        // set the start position of our image
+
+
+        let fireballX2 = 0;
+        let fireballY2 = 0;
+        let fireballX = 110;
+        let fireballY = 110;
+
+
+        // ctx.drawImage(fireballImg2, fireballX2, fireballY2, 50, 50);
+
+
+        function draw(x, y) {
+
+
+
+            ctx.drawImage(fireballImg2, fireballX, fireballY, 80, 80);
+
+            // clears whole canvas to simulate animation (==movement) of the rectangle
+            //ctx.clearRect(0, 0, 300, 300);
+
+
+            // ctx.drawImage(whichImage, x, y, width, height);
+            ctx.drawImage(fireballImg, fireballX, fireballY, 50, 50);
+
+            // // colors rectangle with this color
+            // ctx.fillStyle = "green";
+
+            // // creates rectangle => ctx.fillRect(x, y, width, height);
+            // ctx.fillRect(x, 0, 50, 50);
+
+            // changes position of X coordinate
+            // x += 3;
+            //fireballX += 3;
+            // calls itself every 30ms
+            //setTimeout(`draw(${x}, ${y})`, 30);
+        } </script>
+</body>
+
+</html>
