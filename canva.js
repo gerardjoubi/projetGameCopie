@@ -6,10 +6,10 @@ function setPiece() {
     const credit = Number(prompt("PUT one coin to play the Game"));
     pieceMoney += credit;
     if (pieceMoney >= 1) {
-        // var player = document.querySelector("#audioPlayer");
+       var player = document.querySelector("#audioPlayer");
         startGame()
      
-        // player.play()
+         player.play()
     } else {
         console.log("bug", pieceMoney);
     }
