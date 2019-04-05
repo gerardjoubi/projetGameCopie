@@ -1,37 +1,29 @@
-/////////////////////////////Begin/////////////////
-////////////////////Pay coin///////////////
-var pieceMoney = 0;
-function setPiece() {
+var body = document.getElementById("boddy");
+var myGamePiece;
+var myObstacles = [];
+var myScore;
 
-    const credit = Number(prompt("PUT one coin to play the Game"));
-    pieceMoney += credit;
-    if (pieceMoney >= 1) {
-        // var player = document.querySelector("#audioPlayer");
-        startGame()
-     
-        // player.play()
-    } else {
-        console.log("bug", pieceMoney);
-    }
+body.onload = startGame;
+
+function startGame() {
+    var celineImg = new Image();
+    myGameArea.start();
 }
 
-
-document.body.onload = function() {
-    document.getElementById("insert_coins").onclick = setPiece;
-}
 var gameImg = new component();
 gameImg.src = "./images/space.jpg"
 
-
-
-///////////////////// init important vars ///////////////////
-var myObstacles = [];
-myGamePiece = new component(25, 9, gameImg, 19, 50);//rectangle
+// myGamePiece = new component(10, 25, "red", 10, 120);//rectangle
+myGamePiece = new component(30, 35, gameImg, 10, 10);//rectangle
 myGamePiece.gravity = 0.05;
-myScore = new component("15px", "Consolas", "#e6ff06", 320, 35, "text");//score
+myScore = new component("15px", "Consolas", "#d3d3d3", 320, 35, "text");//score
+// myGameArea.start();
 const shipTest = new ShipComponent(60, 60, "./images/spaceShip.gif", 0, 0);
 shipTest.gravity = 0.05;
-// console.log("testShipConstruct", shipTest)
+console.log("testShipConstruct", shipTest)
+
+
+//}
 ///////////////////////////Game Area////////////
 var myGameArea = {
     canvas: document.createElement("canvas"),
@@ -39,8 +31,7 @@ var myGameArea = {
         this.canvas.width = 540;
         this.canvas.height = 480;
         this.context = this.canvas.getContext("2d");
-        // document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        document.getElementById("board").appendChild(this.canvas);
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
     },
@@ -71,7 +62,7 @@ function ShipComponent(width, height, img, x, y) {
     this.img.src = img;
 
     this.update = function () {
-        //  console.log("ship is updated", this)
+        console.log("ship is updated", this)
         ctx = myGameArea.context;
         ctx.fillStyle = img;
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -88,6 +79,25 @@ function ShipComponent(width, height, img, x, y) {
             this.y = rockbottom;
             this.gravitySpeed = 0;
         }
+    }
+    this.crashWith = function (otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        if (crash) {
+            console.log("crach booo");
+        }
+
+        return crash;
     }
 }
 ////////////////////////////Rectangle Component///////////////////
@@ -110,6 +120,9 @@ function component(width, height, color, x, y, type) {
             ctx.fillText(this.text, this.x, this.y);
         } else {
             ctx.fillStyle = color;
+            ///////////////////////////////////
+            //spaceShip();
+
             ///////////////////////////////////
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
@@ -142,35 +155,22 @@ function component(width, height, color, x, y, type) {
         }
         ///////////////////////////Colusion  explosion//////////////
         if (crash) {
-            
             console.log("crach booo");
-            theCanvas2 = document.getElementById("example2");
+            const theCanvas2 = document.getElementById("example2");
             const fireballImg = new Image();
             fireballImg.src = "./images/giphy.gif";
-            ctx.drawImage(fireballImg, 0, -10, 535, 540);
-            clearInterval(this.updateGameArea);
-            setTimeout(function() {
-                document.location.reload(true)
-            }, 1500)
-            
-            // let player = document.querySelector("#sound_explosion");
-
-            // player.onload = function() {
-            //     console.log("loaded");
-            //     player.play();
-            // }
+            ctx.drawImage(fireballImg, 0, -10, 475, 300);
         }
-
         return crash;
     }
 }
 /////////////////////Rectangle Component////////////////////////////
 //////////////////////Update Game Area ///////////////////////////
-
 function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
+
             return;
         }
     }
@@ -184,8 +184,8 @@ function updateGameArea() {
         minGap = 50;
         maxGap = 200;
         gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-        myObstacles.push(new component(5, height, "#00ffc8", x, 0));//obstacle up 
-        myObstacles.push(new component(5, x - height - gap, "#00ffc8", x, height + gap));//obstacle down
+        myObstacles.push(new component(05, height, "#00ffc8", x, 0));//obstacle up 
+        myObstacles.push(new component(05, x - height - gap, "#00ffc8", x, height + gap));//obstacle down
     }
     for (i = 0; i < myObstacles.length; i += 1) {
         myObstacles[i].x += -1;
@@ -208,14 +208,3 @@ function accelerate(n) {
     myGamePiece.gravity = n;
     shipTest.gravity = n;
 }
-
-function startGame() {
-    myGameArea.start();
-}
-
-
-// function restart() {
-//     startGame;
-// }
-
-
